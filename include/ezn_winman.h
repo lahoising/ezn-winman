@@ -16,6 +16,9 @@ public:
     ~Winman();
 
 private:
+    static void ErrorCallback(int error, const char *description);
+
+private:
     std::unordered_set<std::shared_ptr<Window>> windows;
 };
 
