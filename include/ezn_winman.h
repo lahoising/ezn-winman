@@ -1,5 +1,5 @@
-#ifndef _EZN_WINDOW_MANAGER_H__
-#define _EZN_WINDOW_MANAGER_H__
+#ifndef _EZN_WINMAN_H__
+#define _EZN_WINMAN_H__
 
 #include <memory>
 #include <unordered_set>
@@ -15,11 +15,13 @@ public:
     Winman();
     ~Winman();
 
+    Window *CreateWindow();
+
 private:
     static void ErrorCallback(int error, const char *description);
 
 private:
-    std::unordered_set<std::shared_ptr<Window>> windows;
+    std::unordered_set<Window*> windows;
 };
 
 } // namespace ezn

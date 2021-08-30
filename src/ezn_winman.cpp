@@ -1,30 +1,35 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
+
 #include <ezn_winman.h>
+#include <ezn_window.h>
 
 namespace ezn
 {
     
 Winman::Winman()
 {
-    // if(!glfwInit())
-    // {
-    //     printf("unable to initialize glfw\n");
-    //     return;
-    // }
+    if(!glfwInit())
+    {
+        printf("unable to initialize glfw\n");
+        return;
+    }
 
     glfwSetErrorCallback(Winman::ErrorCallback);
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    GLFWwindow* window = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
-    glfwDestroyWindow(window);
-
 }
 
 Winman::~Winman()
 {
+    for(Window *ptr : this->windows)
+        delete ptr;
     glfwTerminate();
+}
+
+Window *Winman::CreateWindow()
+{
+    Window *window = new Window();
+    this->windows.emplace(window);
+    return window;
 }
 
 void Winman::ErrorCallback(int error, const char *description)
