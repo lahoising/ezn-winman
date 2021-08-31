@@ -4,6 +4,8 @@
 #include <inttypes.h>
 #include <unordered_map>
 
+#include <ezn_input_codes.h>
+
 namespace ezn
 {
 
@@ -29,11 +31,14 @@ private:
     State currentInputState;
     State previousInputState;
     void *windowHandle;
-    void KeyEventCallback(int key, int action);
+    void KeyEventCallback(KeyCode key, InputAction action);
 
 private:
     static std::unordered_map<void*,Input*> windowHandleToInput;
     static void GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mod);
+
+    static KeyCode GetKeyCode(int key);
+    static InputAction GetInputAction(int action);
 };
 
 }
