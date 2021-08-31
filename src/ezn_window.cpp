@@ -15,6 +15,10 @@ Window::Window ()
         fprintf(stderr, "Unable to create window\n");
         return;
     }
+
+    glfwMakeContextCurrent(this->windowHandle);
+
+    this->input = Input({this->windowHandle});
 }
 
 Window::~Window()
@@ -26,5 +30,11 @@ Window::~Window()
     }
     this->windowHandle = nullptr;
 }
+
+void Window::SwapBuffers()
+{
+    glfwSwapBuffers(this->windowHandle);
+}
+
 
 } // namespace ezn

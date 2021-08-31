@@ -16,6 +16,7 @@ public:
     ~Winman();
 
     Window *CreateWindow();
+    void Update();
 
 private:
     static void ErrorCallback(int error, const char *description);
