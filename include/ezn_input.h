@@ -29,6 +29,8 @@ public:
 
     void NextFrame();
     bool IsKeyPressed(KeyCode key);
+    bool KeyJustPressed(KeyCode key);
+    bool KeyReleased(KeyCode key);
 
 private:
     void KeyEventCallback(KeyCode key, InputAction action);

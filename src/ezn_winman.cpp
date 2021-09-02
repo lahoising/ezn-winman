@@ -34,10 +34,10 @@ Window *Winman::CreateWindow()
 
 void Winman::Update()
 {
-    glfwPollEvents();
-
     for(Window *ptr : this->windows)
         ptr->GetInput().NextFrame();
+
+    glfwPollEvents();
 }
 
 void Winman::ErrorCallback(int error, const char *description)

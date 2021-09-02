@@ -8,6 +8,7 @@ namespace ezn
 
 constexpr int keyStateSizeInBits = sizeof(uint64_t) * 8;
 constexpr int keyStateIndex(int key){ return key / keyStateSizeInBits; }
+constexpr int keyBit(int key){ return 1 << (key % keyStateSizeInBits); }
 
 std::unordered_map<void*,Input*> Input::windowHandleToInput;
     
@@ -33,22 +34,35 @@ void Input::NextFrame()
 bool Input::IsKeyPressed(KeyCode key)
 {
     int keyStateIndex = key / (sizeof(uint64_t) * 8);
-    return this->currentInputState.keys[keyStateIndex] & (1 << (key % (sizeof(uint64_t)*8)));
+    return this->currentInputState.keys[keyStateIndex] & keyBit(key);
 }
+
+bool Input::KeyJustPressed(KeyCode key)
+{
+    int stateIndex = keyStateIndex(key);
+    int bit = keyBit(key);
+    return  (this->currentInputState.keys[stateIndex] & bit) &&
+            ((this->previousInputState.keys[stateIndex] & bit) == 0);
+}
+
+bool Input::KeyReleased(KeyCode key)
+{
+    return false;
+}
+
 
 void Input::KeyEventCallback(KeyCode key, InputAction action)
 {
     switch (action)
     {
     case InputAction::ACTION_PRESSED:
-        this->currentInputState.keys[keyStateIndex(key)] |= (1 << (key % keyStateSizeInBits));
+        this->currentInputState.keys[keyStateIndex(key)] |= keyBit(key);
         break;
     case InputAction::ACTION_RELEASED:
-        this->currentInputState.keys[keyStateIndex(key)] &= ~(1 << (key % keyStateSizeInBits));
+        this->currentInputState.keys[keyStateIndex(key)] &= ~keyBit(key);
         break;
     default: break;
     }
-    printf("input action %d\n", action);
 }
 
 void Input::GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mod)
