@@ -47,7 +47,10 @@ bool Input::KeyJustPressed(KeyCode key)
 
 bool Input::KeyReleased(KeyCode key)
 {
-    return false;
+    int stateIndex = keyStateIndex(key);
+    int bit = keyBit(key);
+    return  ((this->currentInputState.keys[stateIndex] & bit) == 0) &&
+            (this->previousInputState.keys[stateIndex] & bit);
 }
 
 
