@@ -18,15 +18,21 @@ Window::Window ()
 
     glfwMakeContextCurrent(this->windowHandle);
 
-    this->input = new Input({this->windowHandle});
+    this->input = new Input({this});
 }
 
 Window::~Window()
+{
+    this->Close();
+}
+
+void Window::Close()
 {
     if(this->input)
     {
         delete this->input;
     }
+    this->input = nullptr;
 
     if(this->windowHandle) 
     {

@@ -1,6 +1,8 @@
 #include <functional>
 #include <iostream>
 #include <GLFW/glfw3.h>
+
+#include <ezn_window.h>
 #include <ezn_input.h>
 
 namespace ezn
@@ -10,20 +12,21 @@ constexpr int keyStateSizeInBits = sizeof(uint64_t) * 8;
 constexpr int keyStateIndex(int key){ return key / keyStateSizeInBits; }
 constexpr int keyBit(int key){ return 1 << (key % keyStateSizeInBits); }
 
-std::unordered_map<void*,Input*> Input::windowHandleToInput;
+std::unordered_map<void*,Window*> Input::handleToWindow;
     
 Input::Input(){}
 
 Input::Input(const Input::CreateParams &params)
-    : windowHandle(params.windowHandle), currentInputState({}), previousInputState({})
+    : window(params.window), currentInputState({}), previousInputState({})
 {
-    Input::windowHandleToInput[this->windowHandle] = this;
-    glfwSetKeyCallback((GLFWwindow*)this->windowHandle, Input::GlfwKeyCallback);
+    GLFWwindow *windowHandle = (GLFWwindow*)this->window->GetWindowHandle();
+    Input::handleToWindow[windowHandle] = this->window;
+    glfwSetKeyCallback(windowHandle, Input::GlfwKeyCallback);
 }
 
 Input::~Input()
 {
-    Input::windowHandleToInput.erase(this->windowHandle);
+    Input::handleToWindow.erase(this->window->GetWindowHandle());
 }
 
 void Input::NextFrame()
@@ -70,7 +73,7 @@ void Input::KeyEventCallback(KeyCode key, InputAction action)
 
 void Input::GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mod)
 {
-    Input::windowHandleToInput[window]->KeyEventCallback(
+    Input::handleToWindow[window]->GetInput().KeyEventCallback(
         Input::GetKeyCode(key), 
         Input::GetInputAction(action));
 }

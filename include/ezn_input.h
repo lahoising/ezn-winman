@@ -9,6 +9,8 @@
 namespace ezn
 {
 
+class Window;
+
 class Input
 {
 public:
@@ -19,7 +21,7 @@ public:
 
     struct CreateParams
     {
-        void *windowHandle;
+        Window *window;
     };
 
 public:
@@ -28,9 +30,12 @@ public:
     ~Input();
 
     void NextFrame();
+
     bool IsKeyPressed(KeyCode key);
     bool KeyJustPressed(KeyCode key);
     bool KeyReleased(KeyCode key);
+
+
 
 private:
     void KeyEventCallback(KeyCode key, InputAction action);
@@ -38,10 +43,10 @@ private:
 private:
     State currentInputState;
     State previousInputState;
-    void *windowHandle;
+    Window *window;
 
 private:
-    static std::unordered_map<void*,Input*> windowHandleToInput;
+    static std::unordered_map<void*,Window*> handleToWindow;
     static void GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mod);
 
     static KeyCode GetKeyCode(int key);
