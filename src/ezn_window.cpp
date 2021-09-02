@@ -18,11 +18,16 @@ Window::Window ()
 
     glfwMakeContextCurrent(this->windowHandle);
 
-    this->input = Input({this->windowHandle});
+    this->input = new Input({this->windowHandle});
 }
 
 Window::~Window()
 {
+    if(this->input)
+    {
+        delete this->input;
+    }
+
     if(this->windowHandle) 
     {
         printf("destroy window\n");

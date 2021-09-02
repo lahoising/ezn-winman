@@ -6,12 +6,15 @@
 namespace ezn
 {
 
+constexpr int keyStateSizeInBits = sizeof(uint64_t) * 8;
+constexpr int keyStateIndex(int key){ return key / keyStateSizeInBits; }
+
 std::unordered_map<void*,Input*> Input::windowHandleToInput;
     
 Input::Input(){}
 
 Input::Input(const Input::CreateParams &params)
-    : windowHandle(params.windowHandle)
+    : windowHandle(params.windowHandle), currentInputState({}), previousInputState({})
 {
     Input::windowHandleToInput[this->windowHandle] = this;
     glfwSetKeyCallback((GLFWwindow*)this->windowHandle, Input::GlfwKeyCallback);
@@ -22,17 +25,40 @@ Input::~Input()
     Input::windowHandleToInput.erase(this->windowHandle);
 }
 
+void Input::NextFrame()
+{
+    this->previousInputState = this->currentInputState;
+}
+
+bool Input::IsKeyPressed(KeyCode key)
+{
+    int keyStateIndex = key / (sizeof(uint64_t) * 8);
+    return this->currentInputState.keys[keyStateIndex] & (1 << (key % (sizeof(uint64_t)*8)));
+}
+
 void Input::KeyEventCallback(KeyCode key, InputAction action)
 {
-    printf("something pressed\n");
+    switch (action)
+    {
+    case InputAction::ACTION_PRESSED:
+        this->currentInputState.keys[keyStateIndex(key)] |= (1 << (key % keyStateSizeInBits));
+        break;
+    case InputAction::ACTION_RELEASED:
+        this->currentInputState.keys[keyStateIndex(key)] &= ~(1 << (key % keyStateSizeInBits));
+        break;
+    default: break;
+    }
+    printf("input action %d\n", action);
 }
 
 void Input::GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mod)
 {
-    Input::windowHandleToInput[window]->KeyEventCallback(key, action);
+    Input::windowHandleToInput[window]->KeyEventCallback(
+        Input::GetKeyCode(key), 
+        Input::GetInputAction(action));
 }
 
-KeyCode GetKeyCode(int key)
+KeyCode Input::GetKeyCode(int key)
 {
     switch (key)
     {
@@ -84,15 +110,18 @@ KeyCode GetKeyCode(int key)
     case GLFW_KEY_LEFT_CONTROL: return KeyCode::KEY_CTRL;
     case GLFW_KEY_LEFT_ALT: return KeyCode::KEY_ALT;
     case GLFW_KEY_LEFT_SHIFT: return KeyCode::KEY_SHIFT;
+
+    default: return KeyCode::KEY_INVALID;
     }
 }
 
-InputAction GetInputAction(int action)
+InputAction Input::GetInputAction(int action)
 {
     switch (action)
     {
     case GLFW_PRESS: return InputAction::ACTION_PRESSED;
     case GLFW_RELEASE: return InputAction::ACTION_RELEASED;
+    default: return InputAction::ACTION_INVALID;
     }
 }
 

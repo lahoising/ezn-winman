@@ -57,12 +57,15 @@ enum KeyCode
     KEY_CTRL,
     KEY_ALT,
     KEY_SHIFT,
+
+    KEY_INVALID
 };
 
 enum InputAction
 {
     ACTION_PRESSED,
-    ACTION_RELEASED
+    ACTION_RELEASED,
+    ACTION_INVALID
 };
 
 } // namespace ezn

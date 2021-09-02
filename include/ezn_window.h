@@ -17,11 +17,11 @@ public:
 
     void SwapBuffers();
 
-    const Input &GetInput(){ return this->input; }
+    Input &GetInput(){ return *this->input; }
 
 private:
     GLFWwindow *windowHandle;
-    Input input;
+    Input *input;
 };
 
 } // namespace ezn

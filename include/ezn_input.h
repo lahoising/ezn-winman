@@ -27,11 +27,16 @@ public:
     Input(const CreateParams &params);
     ~Input();
 
+    void NextFrame();
+    bool IsKeyPressed(KeyCode key);
+
+private:
+    void KeyEventCallback(KeyCode key, InputAction action);
+
 private:
     State currentInputState;
     State previousInputState;
     void *windowHandle;
-    void KeyEventCallback(KeyCode key, InputAction action);
 
 private:
     static std::unordered_map<void*,Input*> windowHandleToInput;
