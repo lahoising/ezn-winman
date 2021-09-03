@@ -1,10 +1,11 @@
 #include <iostream>
 #include <ezn_window.h>
+#include <ezn_winman.h>
 
 namespace ezn
 {
 
-Window::Window ()
+Window::Window(Winman *winman)
 {
     printf("create window\n");
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
@@ -19,6 +20,9 @@ Window::Window ()
     glfwMakeContextCurrent(this->windowHandle);
 
     this->input = new Input({this});
+
+    this->winman = winman;
+    winman->AddWindow(this);
 }
 
 Window::~Window()
@@ -28,6 +32,8 @@ Window::~Window()
 
 void Window::Close()
 {
+    this->winman->RemoveWindow(this);
+
     if(this->input)
     {
         delete this->input;
@@ -40,6 +46,12 @@ void Window::Close()
         glfwDestroyWindow(this->windowHandle);
     }
     this->windowHandle = nullptr;
+}
+
+void Window::Update()
+{
+    if(this->onUpdate) this->onUpdate(this);
+    if(this->input) this->input->NextFrame();
 }
 
 void Window::SwapBuffers()

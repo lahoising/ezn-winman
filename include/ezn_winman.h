@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <unordered_set>
+#include <queue>
 
 namespace ezn
 {
@@ -15,14 +16,20 @@ public:
     Winman();
     ~Winman();
 
-    Window *CreateWindow();
+    void Close();
+
+    void AddWindow(Window *window){ this->windows.emplace(window); }
+    void RemoveWindow(Window *window){ this->windowCloseQueue.push(window); }
     void Update();
+
+    bool Running(){ return !this->windows.empty(); }
 
 private:
     static void ErrorCallback(int error, const char *description);
 
 private:
     std::unordered_set<Window*> windows;
+    std::queue<Window*> windowCloseQueue;
 };
 
 } // namespace ezn

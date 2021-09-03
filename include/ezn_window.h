@@ -10,19 +10,30 @@
 namespace ezn
 {
 
+class Winman;
+
 class Window
 {
 public:
-    Window();
+    typedef std::function<void(Window*)> OnUpdate;
+
+public:
+    Window(Winman *winman);
     ~Window();
 
     void SwapBuffers();
     void Close();
 
+    void Update();
+
     void *GetWindowHandle(){ return this->windowHandle; }
     Input &GetInput(){ return *this->input; }
 
+public:
+    OnUpdate onUpdate;
+
 private:
+    Winman *winman;
     GLFWwindow *windowHandle;
     Input *input;
 };

@@ -20,24 +20,30 @@ Winman::Winman()
 
 Winman::~Winman()
 {
+    this->Close();
+}
+
+void Winman::Close()
+{
     for(Window *ptr : this->windows)
         delete ptr;
     glfwTerminate();
 }
 
-Window *Winman::CreateWindow()
-{
-    Window *window = new Window();
-    this->windows.emplace(window);
-    return window;
-}
-
 void Winman::Update()
 {
-    for(Window *ptr : this->windows)
-        ptr->GetInput().NextFrame();
-
     glfwPollEvents();
+
+    for(Window *ptr : this->windows)
+    {
+        ptr->Update();
+    }
+
+    while(!this->windowCloseQueue.empty())
+    {
+        this->windows.erase(this->windowCloseQueue.front());
+        this->windowCloseQueue.pop();
+    }
 }
 
 void Winman::ErrorCallback(int error, const char *description)
