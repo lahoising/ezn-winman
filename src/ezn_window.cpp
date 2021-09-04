@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 #include <ezn_window.h>
 #include <ezn_winman.h>
 
@@ -50,8 +51,16 @@ void Window::Close()
 
 void Window::Update()
 {
-    if(this->onUpdate) this->onUpdate(this);
-    if(this->input) this->input->NextFrame();
+    assert(("window update function is not set", this->onUpdate));
+    this->onUpdate(this);
+    if(this->input) 
+    {
+        this->input->NextFrame();
+        if(glfwWindowShouldClose(this->windowHandle))
+        {
+            this->Close();
+        }
+    }
 }
 
 std::array<int,2> Window::GetFramebufferSize()
