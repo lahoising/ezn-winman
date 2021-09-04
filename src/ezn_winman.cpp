@@ -46,6 +46,11 @@ void Winman::Update()
     }
 }
 
+void Winman::ToggleVSync(bool on)
+{
+    glfwSwapInterval(on? 1 : 0);
+}
+
 void Winman::ErrorCallback(int error, const char *description)
 {
     fprintf(stderr, "Glfw Error (%d): %s\n", error, description);

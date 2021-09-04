@@ -49,5 +49,4 @@ if(${EZN_WINMANN_BUILD_EXAMPLES})
         add_executable(${ex} ${f})
         target_link_libraries(${ex} ${EZN_WINMAN_LIB})
     endforeach()
-    
 endif()

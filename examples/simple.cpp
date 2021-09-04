@@ -6,6 +6,7 @@
 int main(int argc, char *argv[])
 {
     ezn::Winman winman;
+    winman.ToggleVSync(true);
     {
         std::shared_ptr<ezn::Window> window = std::make_shared<ezn::Window>(&winman);
 

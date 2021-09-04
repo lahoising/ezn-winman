@@ -23,6 +23,7 @@ public:
     void Update();
 
     bool Running(){ return !this->windows.empty(); }
+    void ToggleVSync(bool on);
 
 private:
     static void ErrorCallback(int error, const char *description);
