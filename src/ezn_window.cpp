@@ -6,12 +6,12 @@
 namespace ezn
 {
 
-Window::Window(Winman *winman)
+Window::Window(const Window::CreateParams &params)
 {
     printf("create window\n");
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    this->windowHandle = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
+    this->windowHandle = glfwCreateWindow(params.dimensions[0], params.dimensions[1], params.title, NULL, NULL);
     if(!this->windowHandle)
     {
         fprintf(stderr, "Unable to create window\n");
@@ -22,7 +22,7 @@ Window::Window(Winman *winman)
 
     this->input = new Input({this});
 
-    this->winman = winman;
+    this->winman = params.winman;
     winman->AddWindow(this);
 }
 

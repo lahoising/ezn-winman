@@ -17,9 +17,15 @@ class Window
 {
 public:
     typedef std::function<void(Window*)> OnUpdate;
+    struct CreateParams
+    {
+        std::array<int,2> dimensions;
+        const char *title;
+        Winman *winman;
+    };
 
 public:
-    Window(Winman *winman);
+    Window(const CreateParams &params);
     ~Window();
 
     void SwapBuffers();

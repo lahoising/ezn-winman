@@ -8,7 +8,12 @@ int main(int argc, char *argv[])
     ezn::Winman winman;
     winman.ToggleVSync(true);
     {
-        std::shared_ptr<ezn::Window> window = std::make_shared<ezn::Window>(&winman);
+        ezn::Window::CreateParams windowParams = {};
+        char windowTitle[] = "easy native window";
+        windowParams.dimensions = {1280, 720};
+        windowParams.title = windowTitle;
+        windowParams.winman = &winman;
+        std::shared_ptr<ezn::Window> window = std::make_shared<ezn::Window>(windowParams);
 
         window->onUpdate = [](ezn::Window *window)
         {
