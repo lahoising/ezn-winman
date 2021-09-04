@@ -74,16 +74,21 @@ std::array<int,2> Window::GetFramebufferSize()
 
 void Window::SetFullscreen(int monitorIndex)
 {
-    int monitorCount;
-    GLFWmonitor **monitors = glfwGetMonitors(&monitorCount);
-    monitorIndex = std::clamp(monitorIndex, 0, monitorCount);
+    GLFWmonitor *monitor = nullptr;
+    int w = 800,h = 600;
+    if(monitorIndex >= 0)
+    {
+        int monitorCount;
+        GLFWmonitor **monitors = glfwGetMonitors(&monitorCount);
+        monitorIndex = std::clamp(monitorIndex, 0, monitorCount);
+        monitor = monitors[monitorIndex];
 
-    int w,h;
-    glfwGetWindowSize(this->windowHandle, &w, &h);
+        glfwGetWindowSize(this->windowHandle, &w, &h);
+    }
 
     glfwSetWindowMonitor(
         this->windowHandle,
-        monitors[monitorIndex],
+        monitor,
         0, 0, w, h,
         GLFW_DONT_CARE
     );

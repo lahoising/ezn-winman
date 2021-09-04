@@ -46,6 +46,8 @@ void Winman::Update()
     }
 }
 
+int Winman::GetMonitorsCount(){ int count; glfwGetMonitors(&count); return count; }
+
 void Winman::ToggleVSync(bool on)
 {
     glfwSwapInterval(on? 1 : 0);

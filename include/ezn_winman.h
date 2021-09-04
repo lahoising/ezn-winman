@@ -22,6 +22,8 @@ public:
     void RemoveWindow(Window *window){ this->windowCloseQueue.push(window); }
     void Update();
 
+    int GetMonitorsCount();
+
     bool Running(){ return !this->windows.empty(); }
     void ToggleVSync(bool on);
 
