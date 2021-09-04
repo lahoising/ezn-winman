@@ -10,6 +10,7 @@ void OnUpdate(ezn::Window *window)
 
     if(input.KeyJustPressed(ezn::KEY_F))
     {
+        // turn fullscreen off
         window->SetFullscreen(-1);
     }
     else

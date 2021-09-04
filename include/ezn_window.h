@@ -33,9 +33,10 @@ public:
 
     void Update();
 
-    std::array<int,2> GetFramebufferSize();
     void SetFullscreen(int monitorIndex);
+    void SetDimensions(const std::array<int,2> &size);
 
+    std::array<int,2> GetFramebufferSize();
     void *GetWindowHandle(){ return this->windowHandle; }
     Input &GetInput(){ return *this->input; }
 

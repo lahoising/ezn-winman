@@ -72,6 +72,11 @@ std::array<int,2> Window::GetFramebufferSize()
     return dimensions;
 }
 
+void Window::SetDimensions(const std::array<int,2> &dimensions)
+{
+    glfwSetWindowSize(this->windowHandle, dimensions[0], dimensions[1]);
+}
+
 void Window::SetFullscreen(int monitorIndex)
 {
     GLFWmonitor *monitor = nullptr;
