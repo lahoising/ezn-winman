@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
         windowParams.winman = &winman;
         std::shared_ptr<ezn::Window> window = std::make_shared<ezn::Window>(windowParams);
 
+        window->SetFullscreen(0);
+
         window->onUpdate = [](ezn::Window *window)
         {
             ezn::Input &input = window->GetInput();

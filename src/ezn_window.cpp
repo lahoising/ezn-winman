@@ -55,11 +55,13 @@ void Window::Update()
     this->onUpdate(this);
     if(this->input) 
     {
-        this->input->NextFrame();
         if(glfwWindowShouldClose(this->windowHandle))
         {
             this->Close();
+            return;
         }
+        this->input->NextFrame();
+        this->SwapBuffers();
     }
 }
 
@@ -68,6 +70,23 @@ std::array<int,2> Window::GetFramebufferSize()
     std::array<int,2> dimensions = {};
     glfwGetFramebufferSize(this->windowHandle, &dimensions[0], &dimensions[1]);
     return dimensions;
+}
+
+void Window::SetFullscreen(int monitorIndex)
+{
+    int monitorCount;
+    GLFWmonitor **monitors = glfwGetMonitors(&monitorCount);
+    monitorIndex = std::clamp(monitorIndex, 0, monitorCount);
+
+    int w,h;
+    glfwGetWindowSize(this->windowHandle, &w, &h);
+
+    glfwSetWindowMonitor(
+        this->windowHandle,
+        monitors[monitorIndex],
+        0, 0, w, h,
+        GLFW_DONT_CARE
+    );
 }
 
 void Window::SwapBuffers()

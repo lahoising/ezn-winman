@@ -34,6 +34,8 @@ public:
     void Update();
 
     std::array<int,2> GetFramebufferSize();
+    void SetFullscreen(int monitorIndex);
+    int GetMonitorsCount(){ int count; glfwGetMonitors(&count); return count; }
 
     void *GetWindowHandle(){ return this->windowHandle; }
     Input &GetInput(){ return *this->input; }
