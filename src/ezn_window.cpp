@@ -54,6 +54,13 @@ void Window::Update()
     if(this->input) this->input->NextFrame();
 }
 
+std::array<int,2> Window::GetFramebufferSize()
+{
+    std::array<int,2> dimensions = {};
+    glfwGetFramebufferSize(this->windowHandle, &dimensions[0], &dimensions[1]);
+    return dimensions;
+}
+
 void Window::SwapBuffers()
 {
     glfwSwapBuffers(this->windowHandle);

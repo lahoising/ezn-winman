@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <functional>
+#include <array>
 #include <GLFW/glfw3.h>
 
 #include <ezn_input.h>
@@ -25,6 +26,8 @@ public:
     void Close();
 
     void Update();
+
+    std::array<int,2> GetFramebufferSize();
 
     void *GetWindowHandle(){ return this->windowHandle; }
     Input &GetInput(){ return *this->input; }
