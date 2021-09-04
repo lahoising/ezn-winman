@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.10)
 project(ezn_winman)
 set(EZN_WINMAN_LIB ezn_winman)
 
@@ -36,3 +37,17 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 add_subdirectory("${EXTERNAL_INC}/glfw")
 target_link_libraries(${EZN_WINMAN_LIB} glfw)
+
+###
+# examples
+###
+set(EZN_WINMANN_BUILD_EXAMPLES ON CACHE BOOL "Build winman examples")
+if(${EZN_WINMANN_BUILD_EXAMPLES})
+    file(GLOB example_files "${CMAKE_CURRENT_SOURCE_DIR}/examples/**.cpp")
+    foreach(f ${example_files})
+        get_filename_component(ex ${f} NAME_WE)
+        add_executable(${ex} ${f})
+        target_link_libraries(${ex} ${EZN_WINMAN_LIB})
+    endforeach()
+    
+endif()
