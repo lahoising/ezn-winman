@@ -7,10 +7,12 @@ file(
     "${CMAKE_CURRENT_SOURCE_DIR}/src/**.cpp"
 )
 
+set(EZN_WINMAN_INC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 file(
     GLOB INC_FILES
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/**.h"
+    "${EZN_WINMAN_INC_DIR}/**.h"
 )
+set(EZN_WINMAN_INCLUDE_DIRECTORIES "${EZN_WINMAN_INC_DIR}")
 
 set(EZN_WINMAN_LIB_TYPE SHARED CACHE STRING "Winman library type (e.g. SHARED, STATIC, etc)")
 add_library(
@@ -20,7 +22,7 @@ add_library(
 )
 target_include_directories(
     ${EZN_WINMAN_LIB} PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    "${EZN_WINMAN_INCLUDE_DIRECTORIES}"
 )
 
 set(EXTERNAL_INC "${CMAKE_CURRENT_SOURCE_DIR}/external")
@@ -37,6 +39,8 @@ set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 add_subdirectory("${EXTERNAL_INC}/glfw")
 target_link_libraries(${EZN_WINMAN_LIB} glfw)
+
+set(EZN_WINMAN_INCLUDE_DIRECTORIES "${EZN_WINMAN_INCLUDE_DIRECTORIES}" PARENT_SCOPE)
 
 ###
 # examples
