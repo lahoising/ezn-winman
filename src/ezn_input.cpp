@@ -56,7 +56,6 @@ bool Input::KeyReleased(const KeyCode key) const
             (this->previousInputState.keys[stateIndex] & bit);
 }
 
-
 void Input::KeyEventCallback(const KeyCode key, const InputAction action)
 {
     switch (action)
@@ -144,6 +143,5 @@ InputAction Input::GetInputAction(const int action)
     default: return InputAction::ACTION_INVALID;
     }
 }
-
 
 } // namespace ezn

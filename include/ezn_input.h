@@ -37,8 +37,6 @@ public:
     bool KeyJustPressed(const KeyCode key) const;
     bool KeyReleased(const KeyCode key) const;
 
-
-
 private:
     void KeyEventCallback(const KeyCode key, const InputAction action);
 
