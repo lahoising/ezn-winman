@@ -6,6 +6,8 @@
 
 #include <ezn_input_codes.h>
 
+struct GLFWwindow;
+
 namespace ezn
 {
 
@@ -31,14 +33,14 @@ public:
 
     void NextFrame();
 
-    bool IsKeyPressed(KeyCode key);
-    bool KeyJustPressed(KeyCode key);
-    bool KeyReleased(KeyCode key);
+    bool IsKeyPressed(const KeyCode key) const;
+    bool KeyJustPressed(const KeyCode key) const;
+    bool KeyReleased(const KeyCode key) const;
 
 
 
 private:
-    void KeyEventCallback(KeyCode key, InputAction action);
+    void KeyEventCallback(const KeyCode key, const InputAction action);
 
 private:
     State currentInputState;
@@ -49,8 +51,8 @@ private:
     static std::unordered_map<void*,Window*> handleToWindow;
     static void GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mod);
 
-    static KeyCode GetKeyCode(int key);
-    static InputAction GetInputAction(int action);
+    static KeyCode GetKeyCode(const int key);
+    static InputAction GetInputAction(const int action);
 };
 
 }

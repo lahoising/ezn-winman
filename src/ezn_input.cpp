@@ -34,13 +34,13 @@ void Input::NextFrame()
     this->previousInputState = this->currentInputState;
 }
 
-bool Input::IsKeyPressed(KeyCode key)
+bool Input::IsKeyPressed(const KeyCode key) const
 {
     int keyStateIndex = key / (sizeof(uint64_t) * 8);
     return this->currentInputState.keys[keyStateIndex] & keyBit(key);
 }
 
-bool Input::KeyJustPressed(KeyCode key)
+bool Input::KeyJustPressed(const KeyCode key) const
 {
     int stateIndex = keyStateIndex(key);
     int bit = keyBit(key);
@@ -48,7 +48,7 @@ bool Input::KeyJustPressed(KeyCode key)
             ((this->previousInputState.keys[stateIndex] & bit) == 0);
 }
 
-bool Input::KeyReleased(KeyCode key)
+bool Input::KeyReleased(const KeyCode key) const
 {
     int stateIndex = keyStateIndex(key);
     int bit = keyBit(key);
@@ -57,7 +57,7 @@ bool Input::KeyReleased(KeyCode key)
 }
 
 
-void Input::KeyEventCallback(KeyCode key, InputAction action)
+void Input::KeyEventCallback(const KeyCode key, const InputAction action)
 {
     switch (action)
     {
@@ -78,7 +78,7 @@ void Input::GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int actio
         Input::GetInputAction(action));
 }
 
-KeyCode Input::GetKeyCode(int key)
+KeyCode Input::GetKeyCode(const int key)
 {
     switch (key)
     {
@@ -135,7 +135,7 @@ KeyCode Input::GetKeyCode(int key)
     }
 }
 
-InputAction Input::GetInputAction(int action)
+InputAction Input::GetInputAction(const int action)
 {
     switch (action)
     {
