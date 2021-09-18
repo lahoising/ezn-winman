@@ -144,4 +144,26 @@ InputAction Input::GetInputAction(const int action)
     }
 }
 
+bool ModdedKey::operator==(const ModdedKey &other) const
+{
+    return this->key == other.key &&
+        this->ctrl == other.ctrl &&
+        this->shift == other.shift &&
+        this->alt == other.alt;
+}
+
 } // namespace ezn
+
+namespace std
+{
+
+std::size_t hash<ezn::ModdedKey>::operator()(const ezn::ModdedKey &key) const
+{
+    std::size_t ret = key.key << 3;
+    if(key.ctrl) ret |= 1 << 2;
+    if(key.shift) ret |= 1 << 1;
+    if(key.alt) ret |= 1;
+    return ret;
+}
+
+}

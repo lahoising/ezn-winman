@@ -13,6 +13,14 @@ namespace ezn
 
 class Window;
 
+struct ModdedKey
+{
+    KeyCode key;
+    bool ctrl, shift, alt;
+
+    bool operator==(const ModdedKey &other) const;
+};
+
 class Input
 {
 public:
@@ -53,6 +61,15 @@ private:
     static InputAction GetInputAction(const int action);
 };
 
+}
+
+namespace std
+{
+    template<>
+    struct hash<ezn::ModdedKey>
+    {
+        std::size_t operator()(const ezn::ModdedKey &key) const;
+    };
 }
 
 #endif
