@@ -2,6 +2,8 @@
 #define __EZN_INPUT_H__
 
 #include <inttypes.h>
+#include <vector>
+#include <functional>
 #include <unordered_map>
 
 #include <ezn_input_codes.h>
@@ -24,6 +26,8 @@ struct ModdedKey
 class Input
 {
 public:
+    typedef std::function<void(const KeyCode key, const InputAction action, const KeyMod mod)> EventCallback;
+
     struct State
     {
         uint64_t keys[8];   // 512 bits for key state
@@ -45,13 +49,17 @@ public:
     bool KeyJustPressed(const KeyCode key) const;
     bool KeyReleased(const KeyCode key) const;
 
+    void AddKeyboardCallback(EventCallback callback);
+    void RemoveKeyboardCallback(EventCallback callback);
+
 private:
-    void KeyEventCallback(const KeyCode key, const InputAction action);
+    void KeyEventCallback(const KeyCode key, const InputAction action, const KeyMod mod);
 
 private:
     State currentInputState;
     State previousInputState;
     Window *window;
+    std::vector<EventCallback> callbacks;
 
 private:
     static std::unordered_map<void*,Window*> handleToWindow;
@@ -59,6 +67,7 @@ private:
 
     static KeyCode GetKeyCode(const int key);
     static InputAction GetInputAction(const int action);
+    static KeyMod GetKeyMod(const int mod);
 };
 
 }

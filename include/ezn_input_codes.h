@@ -68,6 +68,14 @@ enum InputAction
     ACTION_INVALID
 };
 
+enum KeyMod
+{
+    MOD_CTRL,
+    MOD_SHIFT,
+    MOD_ALT,
+    MOD_UNKNOWN,
+};
+
 } // namespace ezn
 
 #endif

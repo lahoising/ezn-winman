@@ -1,4 +1,5 @@
 #include <functional>
+#include <algorithm>
 #include <iostream>
 #include <GLFW/glfw3.h>
 
@@ -56,7 +57,7 @@ bool Input::KeyReleased(const KeyCode key) const
             (this->previousInputState.keys[stateIndex] & bit);
 }
 
-void Input::KeyEventCallback(const KeyCode key, const InputAction action)
+void Input::KeyEventCallback(const KeyCode key, const InputAction action, const KeyMod mod)
 {
     switch (action)
     {
@@ -68,13 +69,26 @@ void Input::KeyEventCallback(const KeyCode key, const InputAction action)
         break;
     default: break;
     }
+
+    for(auto &callback : this->callbacks)
+        callback(key, action, mod);
+}
+
+void Input::AddKeyboardCallback(EventCallback callback)
+{
+    this->callbacks.push_back(callback);
+}
+
+void Input::RemoveKeyboardCallback(EventCallback callback)
+{
 }
 
 void Input::GlfwKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mod)
 {
     Input::handleToWindow[window]->GetInput().KeyEventCallback(
         Input::GetKeyCode(key), 
-        Input::GetInputAction(action));
+        Input::GetInputAction(action),
+        Input::GetKeyMod(mod));
 }
 
 KeyCode Input::GetKeyCode(const int key)
@@ -141,6 +155,17 @@ InputAction Input::GetInputAction(const int action)
     case GLFW_PRESS: return InputAction::ACTION_PRESSED;
     case GLFW_RELEASE: return InputAction::ACTION_RELEASED;
     default: return InputAction::ACTION_INVALID;
+    }
+}
+
+KeyMod Input::GetKeyMod(const int mod)
+{
+    switch (mod)
+    {
+    case GLFW_MOD_CONTROL: return KeyMod::MOD_CTRL;
+    case GLFW_MOD_SHIFT: return KeyMod::MOD_SHIFT;
+    case GLFW_MOD_ALT: return KeyMod::MOD_ALT;
+    default: return KeyMod::MOD_UNKNOWN;
     }
 }
 
